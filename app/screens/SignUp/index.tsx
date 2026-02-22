@@ -1,20 +1,43 @@
 import React from 'react';
+import { ScrollView } from 'react-native';
 // Common Components
 import { Input, Wrapper, Button } from 'app/components';
+// Local Components
+import UploadFile from './components/UploadFile';
+// Assets
+import { selfie, passport } from 'app/assets';
+
 export default function SignUp() {
   return (
     <Wrapper>
-      <Input
-        placeholder="Full Name"
-        keyboardType="default"
-        autoCapitalize="words"
-      />
-      <Input
-        placeholder="Email Address"
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <Button label="Sign Up" onPress={() => console.log('Sign Up Pressed')} />
+      <ScrollView>
+        <Input
+          placeholder="Full Name"
+          keyboardType="default"
+          autoCapitalize="words"
+        />
+        <Input
+          placeholder="Email Address"
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <UploadFile
+          title="Upload Password Photo"
+          description="Please upload a clear photo of your passport."
+          defaultImg={passport}
+          imgStyle={{ width: 100, height: 100 }}
+        />
+        <UploadFile
+          title="Upload Selfie photo"
+          description="Please upload a clear selfie holding your passport."
+          defaultImg={selfie}
+          imgStyle={{ width: 100, height: 100 }}
+        />
+        <Button
+          label="Sign Up"
+          onPress={() => console.log('Sign Up Pressed')}
+        />
+      </ScrollView>
     </Wrapper>
   );
 }
