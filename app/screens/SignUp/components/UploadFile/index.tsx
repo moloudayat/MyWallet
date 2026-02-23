@@ -8,19 +8,32 @@ import {
   TouchableOpacity,
 } from 'react-native';
 // Utilities
-import { launchImageLibrary } from 'react-native-image-picker';
+import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
 
 interface UploadFileProps {
   title: string;
   description: string;
   defaultImg: ImageSourcePropType;
   imgStyle: ImageStyle;
+  imageUri?: string | null;
+  setImageUri: (uri: string | null) => void;
 }
 
 export default function UploadFile(props: UploadFileProps) {
-  const [imageUri, setImageUri] = React.useState<string | null>(null);
-
   const handleChoosePicture = () => {
+    // launchCamera(
+    //   {
+    //     mediaType: 'photo',
+    //     cameraType: 'back',
+    //     includeBase64: false,
+    //     saveToPhotos: true,
+    //   },
+    //   response => {
+    //     if (response.assets) {
+    //       props.setImageUri(response.assets[0]?.uri ?? null);
+    //     }
+    //   },
+    // );
     launchImageLibrary(
       {
         mediaType: 'photo',
@@ -28,7 +41,7 @@ export default function UploadFile(props: UploadFileProps) {
       },
       response => {
         const uri = response.assets?.[0]?.uri ?? null;
-        setImageUri(uri);
+        props.setImageUri(uri);
       },
     );
   };
@@ -38,7 +51,7 @@ export default function UploadFile(props: UploadFileProps) {
       <Text>{props.description}</Text>
       <View>
         <Image
-          source={imageUri ? { uri: imageUri } : props.defaultImg}
+          source={props.imageUri ? { uri: props.imageUri } : props.defaultImg}
           style={props.imgStyle}
         />
         <TouchableOpacity onPress={handleChoosePicture}>
