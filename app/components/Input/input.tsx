@@ -1,31 +1,32 @@
 import React from 'react';
-import { StyleSheet, TextInput, type TextInputProps } from 'react-native';
+import { View, TextInput, type TextInputProps, Text } from 'react-native';
+// Styles
+import { useStyle } from './index.style';
+import { useTheme } from 'app/theme';
 
-export type InputProps = TextInputProps;
+export interface InputProps extends TextInputProps {
+  icon?: React.ReactNode;
+}
 
 const Input = React.forwardRef<TextInput, InputProps>(
   ({ style, ...props }, ref) => {
+    const styles = useStyle();
+    const { colors } = useTheme();
+
     return (
-      <TextInput
-        ref={ref}
-        style={[styles.input, style]}
-        {...props}
-        placeholderTextColor="#000"
-      />
+      <View style={styles.container}>
+        {props.icon}
+        <TextInput
+          ref={ref}
+          style={[styles.input, style]}
+          {...props}
+          placeholderTextColor={colors.placeholder}
+        />
+      </View>
     );
   },
 );
 
 Input.displayName = 'Input';
-
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    marginBottom: 10,
-  },
-});
 
 export default Input;

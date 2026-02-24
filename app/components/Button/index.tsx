@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
+// Styles
+import { useStyle } from './index.style';
 
 export type ButtonProps = {
   label: string;
@@ -7,18 +9,11 @@ export type ButtonProps = {
 };
 
 export default function Button({ label, onPress }: ButtonProps) {
+  const styles = useStyle();
+
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Text>{label}</Text>
+      <Text style={styles.label}>{label}</Text>
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#eee',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-});
