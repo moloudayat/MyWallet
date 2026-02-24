@@ -8,7 +8,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 // Utilities
-import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
+// Styles
+import { useStyle } from './index.style';
 
 interface UploadFileProps {
   title: string;
@@ -20,20 +22,9 @@ interface UploadFileProps {
 }
 
 export default function UploadFile(props: UploadFileProps) {
+  const styles = useStyle();
+
   const handleChoosePicture = () => {
-    // launchCamera(
-    //   {
-    //     mediaType: 'photo',
-    //     cameraType: 'back',
-    //     includeBase64: false,
-    //     saveToPhotos: true,
-    //   },
-    //   response => {
-    //     if (response.assets) {
-    //       props.setImageUri(response.assets[0]?.uri ?? null);
-    //     }
-    //   },
-    // );
     launchImageLibrary(
       {
         mediaType: 'photo',
@@ -46,16 +37,16 @@ export default function UploadFile(props: UploadFileProps) {
     );
   };
   return (
-    <View>
-      <Text>{props.title}</Text>
-      <Text>{props.description}</Text>
-      <View>
+    <View style={styles.container}>
+      <Text style={styles.title}>{props.title}</Text>
+      <Text style={styles.description}>{props.description}</Text>
+      <View style={styles.row}>
         <Image
           source={props.imageUri ? { uri: props.imageUri } : props.defaultImg}
-          style={props.imgStyle}
+          style={[props.imgStyle, styles.image]}
         />
-        <TouchableOpacity onPress={handleChoosePicture}>
-          <Text>Choose</Text>
+        <TouchableOpacity style={styles.button} onPress={handleChoosePicture}>
+          <Text style={styles.buttonText}>Choose</Text>
         </TouchableOpacity>
       </View>
     </View>
