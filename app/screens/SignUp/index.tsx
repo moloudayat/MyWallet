@@ -1,15 +1,20 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 // Common Components
 import { Input, Wrapper, Button } from 'app/components';
 // Local Components
 import UploadFile from './components/UploadFile';
 // Assets
-import { selfie, passport } from 'app/assets';
+import { selfie, passport, UserIcon, EmailIcon } from 'app/assets';
 // Hooks
 import { useSignUp } from './index.hooks';
+// Styles
+import { useStyle } from './index.style';
+import { useTheme } from 'app/theme';
 
 export default function SignUp() {
+  const { colors } = useTheme();
+  const styles = useStyle();
   const {
     fullName,
     email,
@@ -23,14 +28,19 @@ export default function SignUp() {
   } = useSignUp();
 
   return (
-    <Wrapper>
+    <Wrapper toolbar="Sign Up">
       <ScrollView>
+        <View style={styles.desContainer}>
+          <Text style={styles.title}>Create Your Account</Text>
+          <Text style={styles.description}>Get started with your wallet</Text>
+        </View>
         <Input
           placeholder="Full Name"
           keyboardType="default"
           autoCapitalize="words"
           value={fullName}
           onChangeText={setFullName}
+          icon={<UserIcon color={colors.secondary} />}
         />
         <Input
           placeholder="Email Address"
@@ -38,12 +48,13 @@ export default function SignUp() {
           autoCapitalize="none"
           value={email}
           onChangeText={setEmail}
+          icon={<EmailIcon color={colors.secondary} />}
         />
         <UploadFile
           title="Upload Password Photo"
           description="Please upload a clear photo of your passport."
           defaultImg={passport}
-          imgStyle={{ width: 100, height: 100 }}
+          imgStyle={styles.passport}
           imageUri={passportPhoto}
           setImageUri={setPassportPhoto}
         />
@@ -51,7 +62,7 @@ export default function SignUp() {
           title="Upload Selfie photo"
           description="Please upload a clear selfie holding your passport."
           defaultImg={selfie}
-          imgStyle={{ width: 100, height: 100 }}
+          imgStyle={styles.selfie}
           imageUri={selfiePhoto}
           setImageUri={setSelfiePhoto}
         />
