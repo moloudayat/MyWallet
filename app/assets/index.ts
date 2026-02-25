@@ -8,3 +8,6 @@ export { default as UserIcon } from './icones/MingcuteUser3Fill';
 export { default as EmailIcon } from './icones/MingcuteMailFill';
 export { default as SunIcon } from './icones/MingcuteSunFill';
 export { default as MoonIcon } from './icones/MingcuteMoonStarsFill';
+export { default as CheckIcon } from './icones/MingcuteCheck2Fill';
+export { default as FaultIcon } from './icones/MingcuteFaultFill';
+export { default as RefreshIcon } from './icones/MingcuteRefresh2Fill';
