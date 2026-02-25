@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 // Assets
 import { SunIcon, MoonIcon } from 'app/assets';
 // Styles
@@ -15,12 +16,13 @@ export type WrapperProps = {
 export default function Wrapper({ toolbar, back, children }: WrapperProps) {
   const styles = useStyle();
   const { colors, isDark, changeMode } = useTheme();
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
       <View style={styles.toolbarContainer}>
         {back ? (
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text>Back</Text>
           </TouchableOpacity>
         ) : (
