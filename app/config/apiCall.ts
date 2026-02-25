@@ -35,6 +35,22 @@ export class ApiError extends Error {
   }
 }
 
+function buildRequestUrl(baseUrl: string, path: string) {
+  if (/^https?:\/\//i.test(path)) {
+    return path;
+  }
+
+  const normalizedBase = baseUrl.replace(/\/+$/, '');
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+
+  // Prevent accidental "/api/api/..." when base URL already ends with "/api".
+  if (normalizedBase.endsWith('/api') && normalizedPath.startsWith('/api/')) {
+    return `${normalizedBase}${normalizedPath.slice(4)}`;
+  }
+
+  return `${normalizedBase}${normalizedPath}`;
+}
+
 export async function call<TResponse = unknown, TBody = unknown>({
   url,
   method = 'GET',
@@ -55,7 +71,7 @@ export async function call<TResponse = unknown, TBody = unknown>({
     config.body = JSON.stringify(body);
   }
 
-  const response = await fetch(`${API_BASE_URL}${url}`, config);
+  const response = await fetch(buildRequestUrl(API_BASE_URL, url), config);
   const responseText = await response.text();
   const parsedData = safeParseJson(responseText) as TResponse | ErrorPayload | null;
 
