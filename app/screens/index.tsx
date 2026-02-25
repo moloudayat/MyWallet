@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { StatusBar } from 'react-native';
 import { ThemeProvider, useTheme } from 'app/theme';
+import { Provider } from 'react-redux';
+import { store } from 'app/store';
 // Utilities
 import {
   createStaticNavigation,
@@ -35,9 +37,11 @@ declare global {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <AppShell />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider>
+        <AppShell />
+      </ThemeProvider>
+    </Provider>
   );
 }
 
