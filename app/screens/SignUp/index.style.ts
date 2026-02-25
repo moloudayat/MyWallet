@@ -23,6 +23,10 @@ export function useStyle() {
       fontSize: 14,
       fontWeight: '400',
     },
+    errorText: {
+      color: '#B91C1C',
+      marginBottom: 10,
+    },
 
     passport: { width: 250, height: 150 },
 

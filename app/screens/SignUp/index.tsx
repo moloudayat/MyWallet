@@ -24,6 +24,8 @@ export default function SignUp() {
     setFullName,
     setEmail,
     setPassportPhoto,
+    registerStatus,
+    registerError,
     handleSubmit,
   } = useSignUp();
 
@@ -66,7 +68,14 @@ export default function SignUp() {
           imageUri={selfiePhoto}
           setImageUri={setSelfiePhoto}
         />
-        <Button label="Sign Up" onPress={handleSubmit} />
+        {registerError ? (
+          <Text style={styles.errorText}>{registerError}</Text>
+        ) : null}
+        <Button
+          label={registerStatus === 'loading' ? 'Signing Up...' : 'Sign Up'}
+          onPress={handleSubmit}
+          disabled={registerStatus === 'loading'}
+        />
       </ScrollView>
     </Wrapper>
   );
