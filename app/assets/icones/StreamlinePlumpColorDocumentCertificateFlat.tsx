@@ -6,7 +6,7 @@ export function StreamlinePlumpColorDocumentCertificateFlat(props: {
   color?: string;
 }) {
   return (
-    <Svg width="24" height="24" viewBox="0 0 48 48">
+    <Svg width="24" height="24" viewBox="0 0 48 48" {...props}>
       {/* Icon from Plump color icons by Streamline - https://creativecommons.org/licenses/by/4.0/ */}
       <G fill="none">
         <Path
