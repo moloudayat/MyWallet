@@ -89,9 +89,19 @@ app.post('/api/auth/login', (req, res) => {
     jwtSecret,
     { expiresIn: '1h' },
   );
+  const refreshToken = jwt.sign(
+    {
+      sub: user.id,
+      email: user.email,
+      type: 'refresh',
+    },
+    jwtSecret,
+    { expiresIn: '7d' },
+  );
 
   return res.json({
     token,
+    refreshToken,
     tokenType: 'Bearer',
     expiresIn: 3600,
     user,
@@ -119,6 +129,7 @@ app.post('/api/register', (req, res) => {
 
   const did = `did:example:${faker.string.uuid()}`;
   const vcId = `urn:uuid:${faker.string.uuid()}`;
+  const password = faker.internet.password({ length: 12, memorable: false });
 
   const vc = {
     '@context': ['https://www.w3.org/2018/credentials/v1'],
@@ -169,6 +180,7 @@ app.post('/api/register', (req, res) => {
 
   return res.status(201).json({
     did,
+    password,
     vc,
     audit: auditRecord,
     uploadedImages: {
