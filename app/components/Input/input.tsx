@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput, type TextInputProps, Text } from 'react-native';
+import { View, TextInput, type TextInputProps } from 'react-native';
 // Styles
 import { useStyle } from './index.style';
 import { useTheme } from 'app/theme';
