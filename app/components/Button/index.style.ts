@@ -11,6 +11,9 @@ export function useStyle() {
       alignItems: 'center',
       backgroundColor: colors.primary,
     },
+    containerDisabled: {
+      opacity: 0.6,
+    },
 
     label: {
       fontWeight: '600',
