@@ -1,7 +1,11 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-
-export type Status = 'Success' | 'Pending' | 'Failed';
+// Local Components
+import StatusBadge from '../StatusBadge';
+// Types
+import type { Status } from '../../index.type';
+// Styles
+import { useStyle } from './index.style';
 
 interface DIDCardProps {
   status: Status;
@@ -9,13 +13,15 @@ interface DIDCardProps {
 }
 
 export default function DIDCard(props: DIDCardProps) {
+  const styles = useStyle();
+
   return (
-    <View>
-      <View>
-        <Text>DID</Text>
-        <Text>{props.status}</Text>
+    <View style={styles.card}>
+      <View style={styles.row}>
+        <Text style={styles.label}>DID</Text>
+        <StatusBadge status={props.status} />
       </View>
-      <Text>{props.did}</Text>
+      <Text style={styles.value}>{props.did}</Text>
     </View>
   );
 }
