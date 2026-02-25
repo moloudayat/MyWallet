@@ -11,3 +11,4 @@ export { default as MoonIcon } from './icones/MingcuteMoonStarsFill';
 export { default as CheckIcon } from './icones/MingcuteCheck2Fill';
 export { default as FaultIcon } from './icones/MingcuteFaultFill';
 export { default as RefreshIcon } from './icones/MingcuteRefresh2Fill';
+export { default as DocumentIcon } from './icones/StreamlinePlumpColorDocumentCertificateFlat';

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { StatusBar } from 'react-native';
+import { ThemeProvider, useTheme } from 'app/theme';
 // Utilities
 import {
   createStaticNavigation,
@@ -8,11 +10,16 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // Screens
 import SignUp from './SignUp';
 import Wallet from './Wallet';
+import Audit from './Audit';
 
 const RootStack = createNativeStackNavigator({
+  screenOptions: {
+    headerShown: false,
+  },
   screens: {
     SignUp,
     Wallet,
+    Audit,
   },
 });
 
@@ -27,5 +34,23 @@ declare global {
 }
 
 export default function App() {
-  return <Navigation />;
+  return (
+    <ThemeProvider>
+      <AppShell />
+    </ThemeProvider>
+  );
+}
+
+function AppShell() {
+  const { isDark, colors } = useTheme();
+
+  return (
+    <>
+      <StatusBar
+        barStyle={isDark ? 'light-content' : 'dark-content'}
+        backgroundColor={colors.background}
+      />
+      <Navigation />
+    </>
+  );
 }

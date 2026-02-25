@@ -6,7 +6,7 @@ import Card from './components/Card';
 
 export default function Audit() {
   return (
-    <Wrapper>
+    <Wrapper back toolbar="Audit">
       <Card />
     </Wrapper>
   );
