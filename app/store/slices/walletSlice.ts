@@ -3,7 +3,9 @@ import type { RootState } from '../index';
 import { ApiError } from 'app/config/apiCall';
 // Types
 import type { RegisterAndLoginResponse, RegisterParams } from 'app/types/user';
+import type { GenerateQRCodeResponse } from 'app/types/wallet';
 import { signUpAndLogin } from 'app/config/apis/user';
+import { generateQRCode } from 'app/config/apis/wallet';
 
 type RequestStatus = 'idle' | 'loading' | 'succeeded' | 'failed';
 
@@ -16,6 +18,11 @@ interface WalletState {
   refreshToken: string | null;
   registerStatus: RequestStatus;
   registerError: string | null;
+  qrCodeStatus: RequestStatus;
+  qrCodeError: string | null;
+  qrCodeValue: string | null;
+  qrCodeImageUrl: string | null;
+  qrCodeExpiresAt: string | null;
 }
 
 const initialState: WalletState = {
@@ -27,6 +34,11 @@ const initialState: WalletState = {
   refreshToken: null,
   registerStatus: 'idle',
   registerError: null,
+  qrCodeStatus: 'idle',
+  qrCodeError: null,
+  qrCodeValue: null,
+  qrCodeImageUrl: null,
+  qrCodeExpiresAt: null,
 };
 
 export const registerUser = createAsyncThunk<
@@ -48,6 +60,40 @@ export const registerUser = createAsyncThunk<
       error instanceof Error
         ? error.message
         : 'Unexpected error while registering',
+    );
+  }
+});
+
+export const generateWalletQRCode = createAsyncThunk<
+  GenerateQRCodeResponse,
+  void,
+  { state: RootState; rejectValue: string }
+>('wallet/generateWalletQRCode', async (_, { getState, rejectWithValue }) => {
+  try {
+    const state = getState();
+    const did = state.wallet.did;
+    const email = state.wallet.email;
+    const fullName = state.wallet.fullName;
+
+    if (!did) {
+      return rejectWithValue(
+        'Missing DID. Please complete registration first.',
+      );
+    }
+
+    return await generateQRCode({
+      did,
+      email: email ?? undefined,
+      fullName: fullName ?? undefined,
+    });
+  } catch (error) {
+    if (error instanceof ApiError) {
+      return rejectWithValue(error.message);
+    }
+    return rejectWithValue(
+      error instanceof Error
+        ? error.message
+        : 'Unexpected error while generating QR code',
     );
   }
 });
@@ -81,6 +127,20 @@ const walletSlice = createSlice({
         state.registerError = action.payload ?? 'Register request failed';
         state.token = null;
         state.refreshToken = null;
+      })
+      .addCase(generateWalletQRCode.pending, state => {
+        state.qrCodeStatus = 'loading';
+        state.qrCodeError = null;
+      })
+      .addCase(generateWalletQRCode.fulfilled, (state, action) => {
+        state.qrCodeStatus = 'succeeded';
+        state.qrCodeValue = action.payload.qrValue;
+        state.qrCodeImageUrl = action.payload.qrImageUrl;
+        state.qrCodeExpiresAt = action.payload.expiresAt;
+      })
+      .addCase(generateWalletQRCode.rejected, (state, action) => {
+        state.qrCodeStatus = 'failed';
+        state.qrCodeError = action.payload ?? 'QR code generation failed';
       });
   },
 });
@@ -99,5 +159,12 @@ export const selectRegisterStatus = (state: RootState) =>
   state.wallet.registerStatus;
 export const selectRegisterError = (state: RootState) =>
   state.wallet.registerError;
+export const selectQRCodeStatus = (state: RootState) => state.wallet.qrCodeStatus;
+export const selectQRCodeError = (state: RootState) => state.wallet.qrCodeError;
+export const selectQRCodeValue = (state: RootState) => state.wallet.qrCodeValue;
+export const selectQRCodeImageUrl = (state: RootState) =>
+  state.wallet.qrCodeImageUrl;
+export const selectQRCodeExpiresAt = (state: RootState) =>
+  state.wallet.qrCodeExpiresAt;
 
 export default walletSlice.reducer;

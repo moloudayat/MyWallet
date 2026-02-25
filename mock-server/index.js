@@ -220,6 +220,40 @@ app.get('/api/audit/logs', (req, res) => {
   });
 });
 
+function handleGenerateQRCode(req, res) {
+  const { did, email, fullName, data } = req.body || {};
+
+  if (!did && !data) {
+    return res.status(400).json({
+      message: 'did or data is required',
+    });
+  }
+
+  const qrValue =
+    data ||
+    JSON.stringify({
+      did,
+      email,
+      fullName,
+      generatedAt: new Date().toISOString(),
+    });
+
+  const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(
+    qrValue,
+  )}`;
+
+  return res.status(201).json({
+    id: faker.string.uuid(),
+    qrValue,
+    qrImageUrl,
+    createdAt: new Date().toISOString(),
+    expiresAt: faker.date.soon({ days: 7 }).toISOString(),
+  });
+}
+
+app.post('/api/wallet/qrcode', handleGenerateQRCode);
+app.post('/wallet/qrcode', handleGenerateQRCode);
+
 app.listen(port, () => {
   console.log(`Mock backend running on http://localhost:${port}`);
 });

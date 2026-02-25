@@ -13,6 +13,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignUp from './SignUp';
 import Wallet from './Wallet';
 import Audit from './Audit';
+import QRCode from './QRCode';
 
 const RootStack = createNativeStackNavigator({
   screenOptions: {
@@ -22,6 +23,7 @@ const RootStack = createNativeStackNavigator({
     SignUp,
     Wallet,
     Audit,
+    QRCode,
   },
 });
 

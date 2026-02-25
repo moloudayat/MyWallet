@@ -23,3 +23,18 @@ export interface AuditLogsResponse {
   count: number;
   logs: AuditLog[];
 }
+
+export interface GenerateQRCodeRequest {
+  did?: string;
+  email?: string;
+  fullName?: string;
+  data?: string;
+}
+
+export interface GenerateQRCodeResponse {
+  id: string;
+  qrValue: string;
+  qrImageUrl: string;
+  createdAt: string;
+  expiresAt: string;
+}
